@@ -14,7 +14,7 @@ The data produced by these scripts is based on a fictional company that supplies
 - Balloons
 - Other celebration and event supplies
 
-## What you’ll find here
+## What you'll find here
 Depending on the script set, you may find assets that:
 - Create or refresh source data files (for example CSV/Excel)
 - Generate customers, products, sales orders, and dates
@@ -33,6 +33,13 @@ Depending on the script set, you may find assets that:
 
 When writing T-SQL scripts intended to run in a **Microsoft Fabric Warehouse**, use these rules to avoid common errors:
 
+### Primary keys in tables
+- **Do not** use `PRIMARY KEY` inline in a `CREATE TABLE` statement.
+  - Example that fails in this environment:
+    - `CustomerID INT NOT NULL IDENTITY(1,1), CONSTRAINT PK_Customer PRIMARY KEY (CustomerID)`
+- **Do** create the table first, then add the primary key using `ALTER TABLE`:
+  - `ALTER TABLE dbo.Customer ADD CONSTRAINT PK_Customer PRIMARY KEY (CustomerID);`
+
 ### Defaults in tables
 - **Do not** use `DEFAULT (...)` inline in a `CREATE TABLE` statement.
   - Example that fails in this environment:
@@ -41,7 +48,7 @@ When writing T-SQL scripts intended to run in a **Microsoft Fabric Warehouse**, 
   - `ALTER TABLE dbo.MyTable ADD CONSTRAINT DF_MyTable_CreatedAt DEFAULT (SYSUTCDATETIME()) FOR CreatedAt;`
 
 ### Re-runnable scripts
-- Prefer `IF NOT EXISTS (...) BEGIN ... END` patterns so scripts can be executed multiple times safely.
+- Prefer `IF NOT EXISTS (...)` BEGIN ... END` patterns so scripts can be executed multiple times safely.
 
 ### Batch separators
 - `GO` may not be supported in all execution contexts. If you hit errors around `GO`, remove it and run as a single batch (or split into separate queries manually).
