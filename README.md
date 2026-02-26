@@ -42,10 +42,12 @@ When writing T-SQL scripts intended to run in a **Microsoft Fabric Warehouse**, 
 
 ### Identity columns
 - Identity columns **must** use the `BIGINT` data type in Microsoft Fabric Warehouse.
+- Identity columns **do not support** specifying SEED or INCREMENT values.
   - Example that fails in this environment:
-    - `CustomerID INT NOT NULL IDENTITY(1,1)`
+    - `CustomerID INT NOT NULL IDENTITY(1,1)` (wrong data type and specifies seed/increment)
+    - `CustomerID BIGINT NOT NULL IDENTITY(1,1)` (specifies seed/increment)
   - Example that works:
-    - `CustomerID BIGINT NOT NULL IDENTITY(1,1)`
+    - `CustomerID BIGINT NOT NULL IDENTITY`
 
 ### Defaults in tables
 - **Do not** use `DEFAULT (...)` inline in a `CREATE TABLE` statement.
