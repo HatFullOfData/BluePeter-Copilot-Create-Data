@@ -56,6 +56,13 @@ When writing T-SQL scripts intended to run in a **Microsoft Fabric Warehouse**, 
   - Example that works:
     - `CustomerName VARCHAR(8000)`
 
+### DATETIME2 precision
+- The `DATETIME2` data type requires an explicit precision value between 0 and 6 in Microsoft Fabric Warehouse.
+  - Example that fails in this environment:
+    - `CreatedAt DATETIME2 NOT NULL`
+  - Example that works:
+    - `CreatedAt DATETIME2(6) NOT NULL`
+
 ### Defaults in tables
 - **Do not** use `DEFAULT (...)` inline in a `CREATE TABLE` statement.
   - Example that fails in this environment:
