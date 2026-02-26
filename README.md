@@ -28,3 +28,20 @@ Depending on the script set, you may find assets that:
 ## Notes
 - All data is fictitious and intended for training purposes only.
 - Outputs are designed to be repeatable so learners can follow along reliably.
+
+## Microsoft Fabric Warehouse SQL scripting rules (for this repo)
+
+When writing T-SQL scripts intended to run in a **Microsoft Fabric Warehouse**, use these rules to avoid common errors:
+
+### Defaults in tables
+- **Do not** use `DEFAULT (...)` inline in a `CREATE TABLE` statement.
+  - Example that fails in this environment:
+    - `CreatedAt DATETIME2 NOT NULL DEFAULT (SYSUTCDATETIME())`
+- **Do** create the table first, then add defaults using `ALTER TABLE`:
+  - `ALTER TABLE dbo.MyTable ADD CONSTRAINT DF_MyTable_CreatedAt DEFAULT (SYSUTCDATETIME()) FOR CreatedAt;`
+
+### Re-runnable scripts
+- Prefer `IF NOT EXISTS (...) BEGIN ... END` patterns so scripts can be executed multiple times safely.
+
+### Batch separators
+- `GO` may not be supported in all execution contexts. If you hit errors around `GO`, remove it and run as a single batch (or split into separate queries manually).
