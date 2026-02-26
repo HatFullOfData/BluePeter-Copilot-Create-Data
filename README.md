@@ -40,6 +40,13 @@ When writing T-SQL scripts intended to run in a **Microsoft Fabric Warehouse**, 
 - **Do** create the table first, then add the primary key using `ALTER TABLE`:
   - `ALTER TABLE dbo.Customer ADD CONSTRAINT PK_Customer PRIMARY KEY (CustomerID);`
 
+### Constraint enforcement
+- Enforced constraints are not supported in Microsoft Fabric Warehouse. All constraints must include `NOT ENFORCED` syntax.
+  - Example that fails in this environment:
+    - `ALTER TABLE dbo.Customer ADD CONSTRAINT PK_Customer PRIMARY KEY (CustomerID);`
+  - Example that works:
+    - `ALTER TABLE dbo.Customer ADD CONSTRAINT PK_Customer PRIMARY KEY (CustomerID) NOT ENFORCED;`
+
 ### Identity columns
 - Identity columns **must** use the `BIGINT` data type in Microsoft Fabric Warehouse.
 - Identity columns **do not support** specifying SEED or INCREMENT values.
