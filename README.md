@@ -40,6 +40,13 @@ When writing T-SQL scripts intended to run in a **Microsoft Fabric Warehouse**, 
 - **Do** create the table first, then add the primary key using `ALTER TABLE`:
   - `ALTER TABLE dbo.Customer ADD CONSTRAINT PK_Customer PRIMARY KEY (CustomerID);`
 
+### Identity columns
+- Identity columns **must** use the `BIGINT` data type in Microsoft Fabric Warehouse.
+  - Example that fails in this environment:
+    - `CustomerID INT NOT NULL IDENTITY(1,1)`
+  - Example that works:
+    - `CustomerID BIGINT NOT NULL IDENTITY(1,1)`
+
 ### Defaults in tables
 - **Do not** use `DEFAULT (...)` inline in a `CREATE TABLE` statement.
   - Example that fails in this environment:
