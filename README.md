@@ -49,6 +49,13 @@ When writing T-SQL scripts intended to run in a **Microsoft Fabric Warehouse**, 
   - Example that works:
     - `CustomerID BIGINT NOT NULL IDENTITY`
 
+### String data types
+- Use `VARCHAR(8000)` for string columns in Microsoft Fabric Warehouse.
+  - Example that fails in this environment:
+    - `CustomerName NVARCHAR(255)`
+  - Example that works:
+    - `CustomerName VARCHAR(8000)`
+
 ### Defaults in tables
 - **Do not** use `DEFAULT (...)` inline in a `CREATE TABLE` statement.
   - Example that fails in this environment:
